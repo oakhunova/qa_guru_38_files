@@ -1,0 +1,9 @@
+{
+  "testData": {
+    "project": "QA Automation",
+    "tester": "Ольга Ахунова",
+    "skills": ["Java", "Selenide", "JUnit"],
+    "experience": 5,
+    "isCertified": false
+  }
+}

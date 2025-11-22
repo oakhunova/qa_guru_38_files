@@ -10,13 +10,18 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
-    testImplementation 'com.codeborne:selenide:6.19.1'
-    testImplementation 'org.apache.poi:poi:5.2.4'
-    testImplementation 'org.apache.poi:poi-ooxml:5.2.4'
-    testImplementation 'org.apache.pdfbox:pdfbox:2.0.29'
-    testImplementation 'com.opencsv:opencsv:5.8'
-    testImplementation 'org.assertj:assertj-core:3.24.2'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'com.codeborne:selenide:7.0.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'com.codeborne:pdf-test:2.1.0'
+    testImplementation 'com.codeborne:xls-test:1.7.2'
+    testImplementation 'org.apache.poi:poi:5.4.1'
+    testImplementation 'org.apache.commons:commons-lang3:3.18.0'
+    testImplementation 'com.opencsv:opencsv:5.9'
+    testImplementation 'com.google.code.gson:gson:2.10.1'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
+    testImplementation 'com.fasterxml.jackson.core:jackson-core:2.15.0'
 }
 
 
