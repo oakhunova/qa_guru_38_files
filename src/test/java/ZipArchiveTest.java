@@ -35,6 +35,7 @@ public class ZipArchiveTest {
 
     @Test
     void csvFileFromZipParsingTest() throws Exception {
+        boolean csvFileFound = false;
         try (ZipInputStream zis = new ZipInputStream(
                 Objects.requireNonNull(cl.getResourceAsStream("Архив.zip")))
         ) {
@@ -42,6 +43,7 @@ public class ZipArchiveTest {
 
             while ((entry = zis.getNextEntry()) != null) {
                 if ("Книга1.csv".equals(entry.getName())) {
+                    csvFileFound = true;
                     byte[] csvContent = zis.readAllBytes();
                     try (CSVReader csvReader = new CSVReaderBuilder(
                             new InputStreamReader(new ByteArrayInputStream(csvContent), StandardCharsets.UTF_8))
@@ -51,7 +53,7 @@ public class ZipArchiveTest {
                             .build()) {
                         List<String[]> data = csvReader.readAll();
 
-                        assertAll("Проверка CSV-файла",
+                        assertAll("Проверка CSV файла",
                                 () -> assertEquals(2, data.size(), "Должно быть 2 строки"),
                                 () -> assertArrayEquals(
                                         new String[] {"Selenide", "https://selenide.org"},
@@ -71,9 +73,11 @@ public class ZipArchiveTest {
                     }
                 }
             }
+        assertTrue(csvFileFound, "CSV файл не найден в архиве");
         }
     @Test
     void pdfFileFromZipParsingTest() throws Exception {
+        boolean pdfFileFound = false;
         try (ZipInputStream zis = new ZipInputStream(
                 Objects.requireNonNull(cl.getResourceAsStream("Архив.zip")))
         ) {
@@ -81,10 +85,10 @@ public class ZipArchiveTest {
 
             while ((entry = zis.getNextEntry()) != null) {
                 if ("price2025.pdf".equals(entry.getName())) {
-
+                    pdfFileFound = true;
                     PDF pdf = new PDF(zis);
 
-                    assertAll("Проверка PDF-файла",
+                    assertAll("Проверка PDF файла",
                             () -> assertTrue(pdf.text.contains("ПРЕЙСКУРАНТ"),
                                     "Файл должен содержать заголовок 'ПРЕЙСКУРАНТ'"),
                             () -> assertTrue(pdf.text.contains("Цена"),
@@ -99,9 +103,11 @@ public class ZipArchiveTest {
                 }
             }
         }
+        assertTrue(pdfFileFound, "PDF файл не найден в архиве");
     }
     @Test
     void xlsxFileFromZipParsingTest() throws Exception {
+        boolean xlsxFileFound = false;
         try (ZipInputStream zis = new ZipInputStream(
                 Objects.requireNonNull(cl.getResourceAsStream("Архив.zip")))
         ) {
@@ -109,12 +115,12 @@ public class ZipArchiveTest {
 
             while ((entry = zis.getNextEntry()) != null) {
                 if ("Тестовое задание №1 (после p2p).xlsx".equals(entry.getName())) {
-
+                    xlsxFileFound = true;
                     XLS xls = new XLS(zis);
                     String deviceType = xls.excel.getSheetAt(0).getRow(5).getCell(4).getStringCellValue();
                     String nameQa = xls.excel.getSheetAt(0).getRow(2).getCell(3).getStringCellValue();
 
-                    assertAll("Проверка XLSX-файла",
+                    assertAll("Проверка XLSX файла",
                             () -> assertTrue(xls.excel.getNumberOfSheets() > 0,
                                     "Файл должен содержать листы"),
                             () -> assertTrue(xls.excel.getSheetAt(0).getPhysicalNumberOfRows() > 0,
@@ -134,5 +140,6 @@ public class ZipArchiveTest {
                 }
             }
         }
+        assertTrue(xlsxFileFound, "XLSX файл не найден в архиве");
     }
 }
